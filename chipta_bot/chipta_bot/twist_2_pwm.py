@@ -35,13 +35,13 @@ class Cheeta_bot(Node):
         self.min_pwm_val = -255
         self.wheel_radius = self.wheel_diameter / 2
         self.inverse_wheel_radius = 1.0 / self.wheel_radius
-        print(self.inverse_wheel_radius)
+        # print(self.inverse_wheel_radius)
         self.circumference = math.pi * self.wheel_diameter
         self.max_speed = (self.circumference * self.motor_rpm) / 60
         self.max_angular = self.max_speed/(self.wheel_diameter/2)
-        print(f"max speed{self.max_speed}")
-        print(f"max speed{self.max_angular}")
-        print('in the end of the init')
+        # print(f"max speed{self.max_speed}")
+        # print(f"max speed{self.max_angular}")
+        # print('in the end of the init')
 
         # self.ik = ik_solver(self,self.length_offset, self.breadth_offset, self.wheel_radius)
 
@@ -105,10 +105,10 @@ class Cheeta_bot(Node):
         # print(mfrp)
 
 
-        print(self.front_left_pwm)
-        print(self.front_right_pwm)
-        print(self.back_left_pwm)
-        print(self.back_right_pwm)
+        print(self.front_left_pwm-255)
+        print(self.front_right_pwm-255)
+        print(self.back_left_pwm-255)
+        print(self.back_right_pwm-255)
 
         self.pwm.data = int((self.front_left_pwm)*1000*1000*1000+(self.front_right_pwm)*1000*1000+(self.back_left_pwm)*1000+self.back_right_pwm)
         # self.pwm.data = int((mflp)*100*100*100+(mfrp)*100*100+(mblp)*100+mbrp)
