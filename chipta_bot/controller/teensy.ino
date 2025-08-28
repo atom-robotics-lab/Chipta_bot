@@ -95,7 +95,7 @@ void setup() {
   pinMode(RPWM3,OUTPUT);
   pinMode(LPWM3,OUTPUT);
 
-  set_microros_transports();
+  set_microros_wifi_transports("A.T.O.M robotics", "atom281121", "192.168.0.104", 8888);
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  
   
