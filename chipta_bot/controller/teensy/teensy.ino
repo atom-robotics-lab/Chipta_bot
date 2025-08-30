@@ -49,16 +49,16 @@ void error_loop(){
 void setMotorSpeed(int rpwm, int lpwm, int pwm) {
 
   if (pwm > 0) {
-    analogWrite(rpwm, pwm);    // Set direction pin 1 HIGH
-    analogWrite(lpwm, 0);     // Set direction pin 2 LOW
+    analogWrite(rpwm, pwm);   
+    analogWrite(lpwm, 0);     
   } 
   else if (pwm < 0) {
-    analogWrite(rpwm, 0);     // Set direction pin 1 LOW
-    analogWrite(lpwm, abs(pwm));    // Set direction pin 2 HIGH
+    analogWrite(rpwm, 0);     
+    analogWrite(lpwm, abs(pwm));
   } 
   else {
-    analogWrite(rpwm, LOW);     // Both direction pins LOW
-    analogWrite(lpwm, LOW);     // This stops the motor
+    analogWrite(rpwm, LOW);     
+    analogWrite(lpwm, LOW);     
   }
 }
 
@@ -95,7 +95,7 @@ void setup() {
   pinMode(RPWM3,OUTPUT);
   pinMode(LPWM3,OUTPUT);
 
-  set_microros_transports();
+  set_microros_wifi_transports("A.T.O.M robotics", "atom281121", "192.168.0.104", 8888);
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  
   
