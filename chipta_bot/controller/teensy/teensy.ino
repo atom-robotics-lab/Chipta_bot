@@ -62,12 +62,12 @@ void setMotorSpeed(int rpwm, int lpwm, int pwm) {
     analogWrite(lpwm, abs(pwm));
   } 
   else {
-    analogWrite(rpwm, LOW);     
-    analogWrite(lpwm, LOW);     
+    analogWrite(rpwm, 0);     
+    analogWrite(lpwm, 0);     
   }
 }
 
-void wm_decode(int64_t combined_value) {
+void pwm_decode(int64_t combined_value) {
   
   br_pwm = (combined_value % 1000)-255;           
   combined_value /= 1000;
@@ -76,7 +76,12 @@ void wm_decode(int64_t combined_value) {
   fr_pwm = (combined_value % 1000)-255;           
   combined_value /= 1000;
   fl_pwm = (combined_value % 1000)-255;
-  
+
+  Serial.println(br_pwm);
+  Serial.println(bl_pwm);
+  Serial.println(fr_pwm);
+  Serial.println(fl_pwm);  
+
   setMotorSpeed(RPWM, LPWM, fl_pwm);
   setMotorSpeed(RPWM1, LPWM1, fr_pwm);
   setMotorSpeed(RPWM2, LPWM2, bl_pwm);
@@ -89,7 +94,7 @@ void subscription_callback(const void * msgin) {
   
   combined_value = msg->data;   
 
-  wm_decode(combined_value);
+  pwm_decode(combined_value);
 
 }
 
@@ -105,9 +110,10 @@ void setup() {
   // pinMode(LPWM2,OUTPUT);
   // pinMode(RPWM3,OUTPUT);
   // pinMode(LPWM3,OUTPUT);
+
   Serial.println("aagya idhar pench");
-  set_microros_wifi_transports("iPhone", "aryanaryan", "10.25.89.233", 8888);
-  Serial.print("wifi chalagya pencho");
+  set_microros_wifi_transports("OPPO", "sudodeva", "10.149.190.233", 8888);
+  Serial.print("wifi chalagya pencho\n\n");
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  
   
@@ -137,10 +143,5 @@ void setup() {
 }
 
 void loop() {
-  delay(100);
-  // Serial.println(br_pwm);
-  // Serial.println(bl_pwm);
-  // Serial.println(fr_pwm);
-  // Serial.println(fl_pwm);
   RCCHECK(rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100)));
 }
