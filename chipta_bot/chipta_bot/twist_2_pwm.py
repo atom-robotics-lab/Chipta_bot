@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Int32 , Int64
+from std_msgs.msg import Int32,Int64
 from geometry_msgs.msg import Twist
 import math
 # import ik_solver as inverse_kine
@@ -12,7 +11,6 @@ class Cheeta_bot(Node):
     def __init__(self):
         super().__init__('Teleop')
 
-        
         self.get_logger().info('Teleop node for CHeeta is now alive')
 
         self.twist_subscription = self.create_subscription(
@@ -21,11 +19,12 @@ class Cheeta_bot(Node):
             self.twist_callback,
             10
         )
-        print(self.twist_subscription)
+        # print(self.twist_subscription)
 
         self.pwm_pub = self.create_publisher(Int64, '/pwm', 10)
         self.pwm = Int64()
 
+        # all the values are in the m 
         self.motor_rpm = 350
         self.wheel_diameter = 0.06
         self.wheel_separation = 0.156
@@ -85,10 +84,10 @@ class Cheeta_bot(Node):
         print(f'omega_back_left   {self.omega_back_left}')
         print(f'omega_back_right   {self.omega_back_right}')
 
-        self.front_left_pwm = self.get_pwm(self.omega_front_left)
-        self.front_right_pwm = self.get_pwm(self.omega_front_right)
-        self.back_left_pwm = self.get_pwm(self.omega_back_left)
-        self.back_right_pwm = self.get_pwm(self.omega_back_right)
+        self.front_left_pwm = int(self.get_pwm(self.omega_front_left))
+        self.front_right_pwm = int(self.get_pwm(self.omega_front_right))
+        self.back_left_pwm = int(self.get_pwm(self.omega_back_left))
+        self.back_right_pwm = int(self.get_pwm(self.omega_back_right))
 
         # self.v_front_left_pwm = max(self.min_pwm_val, min(self.max_pwm_val, self.v_front_left_pwm))
         # self.v_front_right_pwm = max(self.min_pwm_val, min(self.max_pwm_val, self.v_front_right_pwm))
@@ -105,10 +104,10 @@ class Cheeta_bot(Node):
         # print(mfrp)
 
 
-        print(self.front_left_pwm-255)
-        print(self.front_right_pwm-255)
-        print(self.back_left_pwm-255)
-        print(self.back_right_pwm-255)
+        print(self.front_left_pwm)
+        print(self.front_right_pwm)
+        print(self.back_left_pwm)
+        print(self.back_right_pwm)
 
         self.pwm.data = int((self.front_left_pwm)*1000*1000*1000+(self.front_right_pwm)*1000*1000+(self.back_left_pwm)*1000+self.back_right_pwm)
         # self.pwm.data = int((mflp)*100*100*100+(mfrp)*100*100+(mblp)*100+mbrp)
@@ -121,7 +120,7 @@ class Cheeta_bot(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = Cheeta_bot()
-    
+
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:

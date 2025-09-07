@@ -27,6 +27,11 @@ rcl_timer_t timer;
 
 bool micro_ros_init_successful;
 
+int16_t br_pwm;
+int16_t bl_pwm;
+int16_t fr_pwm;
+int16_t fl_pwm;
+int64_t combined_value;
 
 #define LED_PIN 13
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){error_loop();}}
@@ -62,19 +67,15 @@ void setMotorSpeed(int rpwm, int lpwm, int pwm) {
   }
 }
 
-void subscription_callback(const void * msgin) {
-  const std_msgs__msg__Int64 * msg = (const std_msgs__msg__Int64 *)msgin;
+void wm_decode(int64_t combined_value) {
   
-  int64_t combined_value = msg->data;     
-
-  int16_t br_pwm = (combined_value % 1000)-255;           
+  br_pwm = (combined_value % 1000)-255;           
   combined_value /= 1000;
-  int16_t bl_pwm = (combined_value % 1000)-255;           
+  bl_pwm = (combined_value % 1000)-255;           
   combined_value /= 1000;
-  int16_t fr_pwm = (combined_value % 1000)-255;           
+  fr_pwm = (combined_value % 1000)-255;           
   combined_value /= 1000;
-  int16_t fl_pwm = (combined_value % 1000)-255;
-
+  fl_pwm = (combined_value % 1000)-255;
   
   setMotorSpeed(RPWM, LPWM, fl_pwm);
   setMotorSpeed(RPWM1, LPWM1, fr_pwm);
@@ -82,24 +83,35 @@ void subscription_callback(const void * msgin) {
   setMotorSpeed(RPWM3, LPWM3, br_pwm);
 }
 
+
+void subscription_callback(const void * msgin) {
+  const std_msgs__msg__Int64 * msg = (const std_msgs__msg__Int64 *)msgin;
+  
+  combined_value = msg->data;   
+
+  wm_decode(combined_value);
+
+}
+
 void setup() {
 
   Serial.begin(115200);
 
-  pinMode(RPWM,OUTPUT);
-  pinMode(LPWM,OUTPUT);
-  pinMode(RPWM1,OUTPUT);
-  pinMode(LPWM1,OUTPUT);
-  pinMode(RPWM2,OUTPUT);
-  pinMode(LPWM2,OUTPUT);
-  pinMode(RPWM3,OUTPUT);
-  pinMode(LPWM3,OUTPUT);
-
-  set_microros_wifi_transports("A.T.O.M robotics", "atom281121", "192.168.0.104", 8888);
+  // pinMode(RPWM,OUTPUT);
+  // pinMode(LPWM,OUTPUT);
+  // pinMode(RPWM1,OUTPUT);
+  // pinMode(LPWM1,OUTPUT);
+  // pinMode(RPWM2,OUTPUT);
+  // pinMode(LPWM2,OUTPUT);
+  // pinMode(RPWM3,OUTPUT);
+  // pinMode(LPWM3,OUTPUT);
+  Serial.println("aagya idhar pench");
+  set_microros_wifi_transports("iPhone", "aryanaryan", "10.25.89.233", 8888);
+  Serial.print("wifi chalagya pencho");
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  
   
-  delay(2000);
+  // delay(2000);
 
   allocator = rcl_get_default_allocator();
 
@@ -126,5 +138,9 @@ void setup() {
 
 void loop() {
   delay(100);
+  // Serial.println(br_pwm);
+  // Serial.println(bl_pwm);
+  // Serial.println(fr_pwm);
+  // Serial.println(fl_pwm);
   RCCHECK(rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100)));
 }
