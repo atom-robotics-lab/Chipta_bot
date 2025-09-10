@@ -8,14 +8,14 @@
 #include <geometry_msgs/msg/twist.h>
 #include <std_msgs/msg/int64.h>
 
-#define RPWM 18
-#define LPWM 19
-#define RPWM1 14
-#define LPWM1 15
+#define RPWM 12
+#define LPWM 13
+#define RPWM1 27
+#define LPWM1 26
 #define RPWM2 4
-#define LPWM2 3
-#define RPWM3 12  
-#define LPWM3 13
+#define LPWM2 2
+#define RPWM3 18
+#define LPWM3 19
 
 rcl_subscription_t subscriber;
 std_msgs__msg__Int64 msg;   
@@ -103,18 +103,18 @@ void setup() {
 
   Serial.begin(115200);
 
-  // pinMode(RPWM,OUTPUT);
-  // pinMode(LPWM,OUTPUT);
-  // pinMode(RPWM1,OUTPUT);
-  // pinMode(LPWM1,OUTPUT);
-  // pinMode(RPWM2,OUTPUT);
-  // pinMode(LPWM2,OUTPUT);
-  // pinMode(RPWM3,OUTPUT);
-  // pinMode(LPWM3,OUTPUT);
+  pinMode(RPWM,OUTPUT);
+  pinMode(LPWM,OUTPUT);
+  pinMode(RPWM1,OUTPUT);
+  pinMode(LPWM1,OUTPUT);
+  pinMode(RPWM2,OUTPUT);
+  pinMode(LPWM2,OUTPUT);
+  pinMode(RPWM3,OUTPUT);
+  pinMode(LPWM3,OUTPUT);
 
   Serial.println("aagya idhar pench");
-  set_microros_wifi_transports("A.T.O.M_Labs", "atom281121", "192.168.100.18", 8888);
-  Serial.print("wifi chalagya pencho\n\n");
+  set_microros_wifi_transports("A.T.O.M_Labs", "atom281121", "192.168.100.23", 8888);
+  Serial.print("wifi chalgya pencho\n\n");
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  
   
