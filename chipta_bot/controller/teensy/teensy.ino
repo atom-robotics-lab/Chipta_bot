@@ -8,14 +8,23 @@
 #include <geometry_msgs/msg/twist.h>
 #include <std_msgs/msg/int64.h>
 
-#define RPWM 12
-#define LPWM 13
-#define RPWM1 27
-#define LPWM1 26
+// #define RPWM 12
+// #define LPWM 13
+// #define RPWM1 27
+// #define LPWM1 26
+// #define RPWM2 4
+// #define LPWM2 2
+// #define RPWM3 18
+// #define LPWM3 19
+
+#define RPWM 18
+#define LPWM 19
+#define RPWM1 14
+#define LPWM1 15
 #define RPWM2 4
-#define LPWM2 2
-#define RPWM3 18
-#define LPWM3 19
+#define LPWM2 3
+#define RPWM3 8  
+#define LPWM3 7
 
 rcl_subscription_t subscriber;
 std_msgs__msg__Int64 msg;   
@@ -113,7 +122,8 @@ void setup() {
   pinMode(LPWM3,OUTPUT);
 
   Serial.println("aagya idhar pench");
-  set_microros_wifi_transports("A.T.O.M_Labs", "atom281121", "192.168.100.23", 8888);
+  set_microros_transports();
+  // set_microros_wifi_transports("A.T.O.M_Labs", "atom281121", "192.168.100.23", 8888);
   Serial.print("wifi chalgya pencho\n\n");
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  
