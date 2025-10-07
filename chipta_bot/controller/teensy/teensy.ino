@@ -8,23 +8,14 @@
 #include <geometry_msgs/msg/twist.h>
 #include <std_msgs/msg/int64.h>
 
-// #define RPWM 12
-// #define LPWM 13
-// #define RPWM1 27
-// #define LPWM1 26
-// #define RPWM2 4
-// #define LPWM2 2
-// #define RPWM3 18
-// #define LPWM3 19
-
-#define RPWM 18
-#define LPWM 19
-#define RPWM1 14
-#define LPWM1 15
-#define RPWM2 4
-#define LPWM2 3
-#define RPWM3 8  
-#define LPWM3 7
+#define RPWM1 23   // fr    
+#define LPWM1 22     
+#define RPWM2 2     //fl
+#define LPWM2 4      
+#define DIR3  19    // rr
+#define PWM3 21
+#define DIR4  5    // rl
+#define PWM4 13
 
 rcl_subscription_t subscriber;
 std_msgs__msg__Int64 msg;   
@@ -36,8 +27,8 @@ rcl_timer_t timer;
 
 bool micro_ros_init_successful;
 
-int16_t br_pwm;
-int16_t bl_pwm;
+int16_t rr_pwm;
+int16_t rl_pwm;
 int16_t fr_pwm;
 int16_t fl_pwm;
 int64_t combined_value;
@@ -60,7 +51,7 @@ void error_loop(){
 //   digitalWrite(LED_PIN, (msg->linear.x == 0) ? LOW : HIGH);
 // }
 
-void setMotorSpeed(int rpwm, int lpwm, int pwm) {
+void bts_driver(int rpwm, int lpwm, int pwm) {
 
   if (pwm > 0) {
     analogWrite(rpwm, pwm);   
@@ -76,25 +67,40 @@ void setMotorSpeed(int rpwm, int lpwm, int pwm) {
   }
 }
 
+void smartElex_driver(int dir, int pwm_pin, int value) {
+
+  if (value > 0) {
+    digitalWrite(dir, LOW);
+    analogWrite(pwm_pin, value);   
+  } 
+  else if (value < 0) {
+    digitalWrite(dir, HIGH);
+    analogWrite(pwm_pin, abs(value));   
+  } 
+  else {
+    analogWrite(pwm_pin, 0); 
+  }
+}
+
 void pwm_decode(int64_t combined_value) {
   
-  br_pwm = (combined_value % 1000)-255;           
+  rr_pwm = (combined_value % 1000)-255;           
   combined_value /= 1000;
-  bl_pwm = (combined_value % 1000)-255;           
+  rl_pwm = (combined_value % 1000)-255;           
   combined_value /= 1000;
   fr_pwm = (combined_value % 1000)-255;           
   combined_value /= 1000;
   fl_pwm = (combined_value % 1000)-255;
 
-  Serial.println(br_pwm);
-  Serial.println(bl_pwm);
+  Serial.println(rr_pwm);
+  Serial.println(rl_pwm);
   Serial.println(fr_pwm);
   Serial.println(fl_pwm);  
 
-  setMotorSpeed(RPWM, LPWM, fl_pwm);
-  setMotorSpeed(RPWM1, LPWM1, fr_pwm);
-  setMotorSpeed(RPWM2, LPWM2, bl_pwm);
-  setMotorSpeed(RPWM3, LPWM3, br_pwm);
+  bts_driver(RPWM1, LPWM1, fr_pwm);    // fr
+  bts_driver(RPWM2, LPWM2, fl_pwm);   // fl
+  bts_driver(DIR3, PWM3, rr_pwm);    // rr
+  smartElex_driver(DIR4, PWM4, rl_pwm);    // rl
 }
 
 
@@ -110,20 +116,26 @@ void subscription_callback(const void * msgin) {
 
 void setup() {
 
-  Serial.begin(115200);
+  Serial.begin(9600);
 
-  pinMode(RPWM,OUTPUT);
-  pinMode(LPWM,OUTPUT);
   pinMode(RPWM1,OUTPUT);
   pinMode(LPWM1,OUTPUT);
   pinMode(RPWM2,OUTPUT);
   pinMode(LPWM2,OUTPUT);
-  pinMode(RPWM3,OUTPUT);
-  pinMode(LPWM3,OUTPUT);
+  pinMode(DIR3,OUTPUT);
+  pinMode(PWM3,OUTPUT);
+  pinMode(DIR4,OUTPUT);
+  pinMode(PWM4,OUTPUT);
+  digitalWrite(DIR3, LOW);
+  analogWrite(PWM3, 0); 
+  digitalWrite(DIR4, LOW);
+  analogWrite(PWM4, 0); 
 
   Serial.println("aagya idhar pench");
   set_microros_transports();
-  // set_microros_wifi_transports("A.T.O.M_Labs", "atom281121", "192.168.100.23", 8888);
+  // set_microros_serial_transports();
+
+  // set_microros_wifi_transports("Laxmipg", "atom281121", "192.168.100.23", 8888);
   Serial.print("wifi chalgya pencho\n\n");
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  

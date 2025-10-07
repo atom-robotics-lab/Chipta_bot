@@ -66,6 +66,8 @@ class Cheeta_bot(Node):
 
     def get_pwm(self,omega):
         rpm = omega * (60 / (2 * math.pi)) # omega/60/2pi
+        if rpm>340:
+            rpm = 340
         # print(f'rpm/rpm/rpm/rpm{rpm}')
         normal = rpm/self.motor_rpm   
         # print(f'normal/normal/normal{normal}')
