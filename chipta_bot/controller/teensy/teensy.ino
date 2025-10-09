@@ -10,12 +10,12 @@
 
 #define RPWM1 23   // fr    
 #define LPWM1 22     
-#define RPWM2 2     //fl
-#define LPWM2 4      
-#define DIR3  19    // rr
-#define PWM3 21
+#define RPWM2 18     //fl
+#define LPWM2 19      
+#define RPWM3  2    // rr
+#define LPWM3 4
 #define DIR4  5    // rl
-#define PWM4 13
+#define PWM4 21
 
 rcl_subscription_t subscriber;
 std_msgs__msg__Int64 msg;   
@@ -99,7 +99,7 @@ void pwm_decode(int64_t combined_value) {
 
   bts_driver(RPWM1, LPWM1, fr_pwm);    // fr
   bts_driver(RPWM2, LPWM2, fl_pwm);   // fl
-  bts_driver(DIR3, PWM3, rr_pwm);    // rr
+  bts_driver(RPWM3, LPWM3, rr_pwm);    // rr
   smartElex_driver(DIR4, PWM4, rl_pwm);    // rl
 }
 
@@ -122,12 +122,12 @@ void setup() {
   pinMode(LPWM1,OUTPUT);
   pinMode(RPWM2,OUTPUT);
   pinMode(LPWM2,OUTPUT);
-  pinMode(DIR3,OUTPUT);
-  pinMode(PWM3,OUTPUT);
+  pinMode(RPWM3,OUTPUT);
+  pinMode(LPWM3,OUTPUT);
   pinMode(DIR4,OUTPUT);
   pinMode(PWM4,OUTPUT);
-  digitalWrite(DIR3, LOW);
-  analogWrite(PWM3, 0); 
+  // digitalWrite(DIR3, LOW);
+  // analogWrite(PWM3, 0); 
   digitalWrite(DIR4, LOW);
   analogWrite(PWM4, 0); 
 
