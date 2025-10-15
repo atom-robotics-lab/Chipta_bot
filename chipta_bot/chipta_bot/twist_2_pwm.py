@@ -7,11 +7,11 @@ import math
 # import ik_solver as inverse_kine
 # import ik_solver as ik_solver
 
-class Cheeta_bot(Node):
+class Chipta_bot(Node):
     def __init__(self):
         super().__init__('Teleop')
 
-        self.get_logger().info('Teleop node for CHeeta is now alive')
+        self.get_logger().info('Teleop node for CHipta is now alive')
 
         self.twist_subscription = self.create_subscription(
             Twist,
@@ -66,8 +66,8 @@ class Cheeta_bot(Node):
 
     def get_pwm(self,omega):
         rpm = omega * (60 / (2 * math.pi)) # omega/60/2pi
-        if rpm>345:
-            rpm = 345
+        if rpm>350:
+            rpm = 350
         # print(f'rpm/rpm/rpm/rpm{rpm}')
         normal = rpm/self.motor_rpm
         # print(f'normal/normal/normal{normal}')
@@ -121,7 +121,7 @@ class Cheeta_bot(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = Cheeta_bot()
+    node = Chipta_bot()
 
     try:
         rclpy.spin(node)
