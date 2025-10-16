@@ -1,8 +1,12 @@
 import rclpy 
 from rclpy.node import Node 
+from geometry_msgs.msg import Quaternion, Twist,TransformStamped
 from std_msgs.msg import Int32,Int64
 from nav_msgs.msg import Odometry
 from tf2_ros import TransformBroadcaster
+import numpy as np
+import math
+from math import sin , cos , pi
 
 class DiffTF(Node):
     def __init__(self):
@@ -28,6 +32,8 @@ class DiffTF(Node):
                 self.encoder_max - self.encoder_min) * 0.3 + self.encoder_min).value
         self.encoder_high_wrap = self.declare_parameter('wheel_high_wrap', (
                 self.encoder_max - self.encoder_min) * 0.7 + self.encoder_min).value
+        self.base_frame_id = self.declare_parameter('base_frame_id','base_link').value
+        self.odom_frame_id = self.declare_parameter('odom_frame_id','odom').value
 
         self.frmult = 0.0
         self.curr_fr_enc = None
@@ -42,6 +48,19 @@ class DiffTF(Node):
         self.curr_rl_enc = None
         self.prev_rl_enc = None
 
+        self.motor_rpm = 350
+        self.wheel_diameter = 0.06
+        self.wheel_radius = self.wheel_diameter / 2
+        self.L = 0.156
+        self.W = 0.130
+        self.x = 0.0
+        self.y = 0.0
+        self.th = 0.0
+        self.circumference = math.pi * self.wheel_diameter
+        self.max_speed = (self.circumference * self.motor_rpm) / 60
+        self.max_angular = self.max_speed/(self.wheel_diameter/2)
+
+        self.last_time = 0.0
         self.create_timer(1.0 / self.rate_hz, self.update)
 
     def fr_wheel_callback(self,msg):
@@ -60,7 +79,6 @@ class DiffTF(Node):
             self.frmult = self.frmult - 1
 
         self.curr_fr_enc = 1.0 * (enc + self.frmult * (self.encoder_max - self.encoder_min))
-        self.prev_fr_enc = enc
 
 
     def fl_wheel_callback(self,msg):
@@ -79,7 +97,6 @@ class DiffTF(Node):
             self.flmult = self.flmult - 1
 
         self.curr_fl_enc = 1.0 * (enc + self.flmult * (self.encoder_max - self.encoder_min))
-        self.prev_fl_enc = enc
 
     def rr_wheel_callback(self,msg):
         enc = msg.data
@@ -97,7 +114,6 @@ class DiffTF(Node):
             self.rrmult = self.rrmult - 1
 
         self.curr_rr_enc = 1.0 * (enc + self.rrmult * (self.encoder_max - self.encoder_min))
-        self.prev_rr_enc = enc
 
     def rl_wheel_callback(self,msg):
         enc = msg.data
@@ -115,10 +131,80 @@ class DiffTF(Node):
             self.rlmult = self.rlmult - 1
 
         self.curr_rl_enc = 1.0 * (enc + self.rlmult * (self.encoder_max - self.encoder_min))
-        self.prev_rl_enc = enc
 
     def update(self):
-        pass
+        if None in [self.curr_fr_enc, self.curr_fl_enc, self.curr_rr_enc, self.curr_rl_enc]:
+            return
+        now = self.get_clock().now()
+        if self.last_time == 0:
+            self.last_time = now.nanoseconds
+            return
+        
+        dt = (now.nanoseconds - self.last_time)/1e9
+        if dt <= 0:
+            return
+        self.last_time = now.nanoseconds
+
+        print(self.curr_fl_enc,self.prev_fl_enc)
+        d_fr = (self.curr_fr_enc - self.prev_fr_enc) / self.ticks_meter_fr
+        self.prev_fr_enc = self.curr_fr_enc
+        d_fl = (self.curr_fl_enc - self.prev_fl_enc) / self.ticks_meter_fl
+        self.prev_fl_enc = self.curr_fl_enc
+        d_rr = (self.curr_rr_enc - self.prev_rr_enc) / self.ticks_meter_rr
+        self.prev_rr_enc = self.curr_rr_enc
+        d_rl = (self.curr_rl_enc - self.prev_rl_enc) / self.ticks_meter_rl
+        self.prev_rl_enc = self.curr_rl_enc
+        print(d_fr)
+
+        v_fr = d_fr / dt
+        v_fl = d_fl / dt
+        v_rr = d_rr / dt
+        v_rl = d_rl / dt
+
+        vx = (self.wheel_radius/4) * (v_fl + v_fr + v_rl + v_rr)
+        vy = (self.wheel_radius/4) * (-v_fl + v_fr + v_rl - v_rr)
+        vth = (self.wheel_radius / (4 * (self.L + self.W))) * (-v_fl + v_fr - v_rl + v_rr)
+
+        self.x += (vx * np.cos(self.th) - vy * np.sin(self.th)) * dt
+        self.y += (vx * np.sin(self.th) + vy * np.cos(self.th)) * dt
+        self.th += vth * dt
+        print(self.x,self.y,self.th)
+
+        quaternion = Quaternion()
+        quaternion.x = 0.0
+        quaternion.y = 0.0
+        quaternion.z = sin(self.th / 2)
+        quaternion.w = cos(self.th / 2)
+
+        transform_stamped_msg = TransformStamped()
+        transform_stamped_msg.header.stamp = now.to_msg()
+        transform_stamped_msg.header.frame_id = self.odom_frame_id  # "odom"
+        transform_stamped_msg.child_frame_id = self.base_frame_id   # "base_link"
+        transform_stamped_msg.transform.translation.x = self.x
+        transform_stamped_msg.transform.translation.y = self.y
+        transform_stamped_msg.transform.translation.z = 0.0
+        transform_stamped_msg.transform.rotation.x = quaternion.x
+        transform_stamped_msg.transform.rotation.y = quaternion.y
+        transform_stamped_msg.transform.rotation.z = quaternion.z
+        transform_stamped_msg.transform.rotation.w = quaternion.w
+
+        self.odom_broadcaster.sendTransform(transform_stamped_msg)
+
+        odom = Odometry()
+        odom.header.stamp = now.to_msg()
+        odom.header.frame_id = self.odom_frame_id
+        odom.child_frame_id = self.base_frame_id
+        odom.pose.pose.position.x = self.x
+        odom.pose.pose.position.y = self.y
+        odom.pose.pose.position.z = 0.0
+        odom.pose.pose.orientation = quaternion
+        odom.twist.twist.linear.x = vx
+        odom.twist.twist.linear.y = vy
+        odom.twist.twist.angular.z = vth
+        self.odom_pub.publish(odom)
+
+
+
 
 def main(args=None):
     rclpy.init(args=args)

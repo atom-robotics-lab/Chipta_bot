@@ -21,6 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'twist_2_pwm = chipta_bot.twist_2_pwm:main',
+            'diff_tf = chipta_bot.diff_tf:main',
+            'fkenc = chipta_bot.fkenc:main',
         ],
     },
 )
