@@ -21,10 +21,10 @@ class DiffTF(Node):
         self.odom_broadcaster = TransformBroadcaster(self)
 
         self.rate_hz = self.declare_parameter("rate_hz", 10.0).value
-        self.ticks_meter_fr = float(self.declare_parameter('ticks_meter_fr', 470).value)  
-        self.ticks_meter_fl = float(self.declare_parameter('ticks_meter_fl', 470).value)  
-        self.ticks_meter_rr = float(self.declare_parameter('ticks_meter_rr', 470).value)  
-        self.ticks_meter_rl = float(self.declare_parameter('ticks_meter_rl', 470).value)
+        self.ticks_meter_fr = float(self.declare_parameter('ticks_meter_fr', 1857).value)  
+        self.ticks_meter_fl = float(self.declare_parameter('ticks_meter_fl', 1857).value)  
+        self.ticks_meter_rr = float(self.declare_parameter('ticks_meter_rr', 1857).value)  
+        self.ticks_meter_rl = float(self.declare_parameter('ticks_meter_rl', 1857).value)
 
         self.encoder_min = int(self.declare_parameter('encoder_min', -9223372036854775808).value)
         self.encoder_max = int(self.declare_parameter('encoder_max',  9223372036854775807).value)

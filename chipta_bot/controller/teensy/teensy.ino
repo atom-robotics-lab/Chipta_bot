@@ -131,20 +131,20 @@ void PWM_callback(const void * msgin) {
 }
 
 void IRAM_ATTR update_fr_enc() {
-  if (digitalRead(FR_ENC_A) == digitalRead(FR_ENC_B))  fr_enc_value++;
-  else fr_enc_value--;
+  if (digitalRead(FR_ENC_A) == digitalRead(FR_ENC_B))  fr_enc_value--;
+  else fr_enc_value++;
 }
 void IRAM_ATTR update_fl_enc() {
-  if (digitalRead(FL_ENC_A) == digitalRead(FL_ENC_B)) fl_enc_value++;
-  else fl_enc_value--;
+  if (digitalRead(FL_ENC_A) == digitalRead(FL_ENC_B)) fl_enc_value--;
+  else fl_enc_value++;
 }
 void IRAM_ATTR update_rr_enc() {
-  if (digitalRead(RR_ENC_A) == digitalRead(RR_ENC_B)) rr_enc_value--;
-  else rr_enc_value++;
+  if (digitalRead(RR_ENC_A) == digitalRead(RR_ENC_B)) rr_enc_value++;
+  else rr_enc_value--;
 }
 void IRAM_ATTR update_rl_enc() {
-  if (digitalRead(RL_ENC_A) == digitalRead(RL_ENC_B)) rl_enc_value--;
-  else rl_enc_value++;
+  if (digitalRead(RL_ENC_A) == digitalRead(RL_ENC_B)) rl_enc_value++;
+  else rl_enc_value--;
 }
 
 void setup() {
@@ -183,10 +183,10 @@ void setup() {
 
 
   Serial.println("aagya idhar pench");
-  // set_microros_transports();
+  set_microros_transports();
   // set_microros_serial_transports();
 
-  set_microros_wifi_transports("OPPO", "12345678", "172.28.2.233", 8888);
+  // set_microros_wifi_transports("OPPO", "12345678", "172.28.2.233", 8888);
   Serial.print("wifi chalgya pencho\n\n");
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  
