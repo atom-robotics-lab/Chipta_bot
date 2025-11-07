@@ -186,8 +186,8 @@ void setup() {
   set_microros_transports();
   // set_microros_serial_transports();
 
-  // set_microros_wifi_transports("OPPO", "12345678", "172.28.2.233", 8888);
-  Serial.print("wifi chalgya pencho\n\n");
+  // set_microros_wifi_transports("A.T.O.M_Labs", "12345678", "192.168.100.23", 8888);
+  // Serial.print("wifi chalgya pencho\n\n");
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  
   

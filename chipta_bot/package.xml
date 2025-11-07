@@ -7,6 +7,8 @@
   <maintainer email="adityadevsingh16@gmail.com">dev</maintainer>
   <license>Apache-2.0</license>
 
+  <exec_depend>ros2launch</exec_depend>
+  
   <depend>rclpy</depend>
   <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>
