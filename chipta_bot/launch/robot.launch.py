@@ -31,5 +31,5 @@ def generate_launch_description():
     return LaunchDescription([
         twist2pwm,
         diff_tf,
-        # fkenc,
+        fkenc,
     ])
