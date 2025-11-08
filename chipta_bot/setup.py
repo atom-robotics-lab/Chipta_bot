@@ -1,13 +1,13 @@
 import os
-from glob import glob
-from setuptools import find_packages, setup
+from glob import glob    # all files /launch*
+from setuptools import find_packages, setup # findpackage->__init__ is where , setup->how to install this pac
 
 package_name = 'chipta_bot'
 
 setup(
     name=package_name,
     version='0.0.0',
-    packages=find_packages(exclude=['test']),
+    packages=find_packages(exclude=['test']),  # find_packages() says: “include all folders that contain __init__.py.”
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),

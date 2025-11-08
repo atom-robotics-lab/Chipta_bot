@@ -1,8 +1,8 @@
 import rclpy 
 from rclpy.node import Node 
-from geometry_msgs.msg import Quaternion, Twist,TransformStamped
+from geometry_msgs.msg import Quaternion, Twist,TransformStamped # quater orien in 3d space odom and tf  # tranfprm pub tf transforms base_link -> odom
 from std_msgs.msg import Int32,Int64
-from nav_msgs.msg import Odometry
+from nav_msgs.msg import Odometry # contains x,y,z ,orien(quaternion), linear and angular vels
 from tf2_ros import TransformBroadcaster
 import numpy as np
 import math
@@ -20,7 +20,7 @@ class DiffTF(Node):
         self.odom_pub = self.create_publisher(Odometry, "/odom", 10)
         self.odom_broadcaster = TransformBroadcaster(self)
 
-        self.rate_hz = self.declare_parameter("rate_hz", 10.0).value
+        self.rate_hz = self.declare_parameter("rate_hz", 30.0).value
         self.ticks_meter_fr = float(self.declare_parameter('ticks_meter_fr', 1857).value)  
         self.ticks_meter_fl = float(self.declare_parameter('ticks_meter_fl', 1857).value)  
         self.ticks_meter_rr = float(self.declare_parameter('ticks_meter_rr', 1857).value)  
@@ -48,6 +48,7 @@ class DiffTF(Node):
         self.curr_rl_enc = None
         self.prev_rl_enc = None
 
+        # meters 
         self.motor_rpm = 350
         self.wheel_diameter = 0.06
         self.wheel_radius = self.wheel_diameter / 2
@@ -182,7 +183,7 @@ class DiffTF(Node):
         transform_stamped_msg.child_frame_id = self.base_frame_id   # "base_link"
         transform_stamped_msg.transform.translation.x = self.x
         transform_stamped_msg.transform.translation.y = self.y
-        transform_stamped_msg.transform.translation.z = 0.0
+        transform_stamped_msg.transform.translation.z = 0.0 
         transform_stamped_msg.transform.rotation.x = quaternion.x
         transform_stamped_msg.transform.rotation.y = quaternion.y
         transform_stamped_msg.transform.rotation.z = quaternion.z
