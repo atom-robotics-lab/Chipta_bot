@@ -1,0 +1,17 @@
+docker run -it --net=host \
+    -e ROS_DOMAIN_ID=10 \
+    -v /home/dev/chipta_ws/src/Chipta_bot:/chipta_ws/src \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -e DISPLAY=$DISPLAY \
+    --name chipta_container \
+    myimage:latest
+
+| Flag                               | Purpose                                                  |
+| ---------------------------------- | -------------------------------------------------------- |
+| `--net=host`                       | Allows ROS 2 multicast → Topics visible inside container |
+| `-e ROS_DOMAIN_ID=10`              | Ensures container & laptop share same ROS graph          |
+| `-v /home/aditya/my_ws:/workspace` | Mount your project so changes sync both ways             |
+| `-v /tmp/.X11-unix:/tmp/.X11-unix` | Lets RViz GUI display from container to your laptop      |
+| `-e DISPLAY=$DISPLAY`              | Tells container which display to use                     |
+| `--name ros_jazzy_dev`             | Gives your container a name                              |
+| `myimage:latest`                   | The image you built                                      |
