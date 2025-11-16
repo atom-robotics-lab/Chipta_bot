@@ -15,7 +15,7 @@ def generate_launch_description():
 
     # Package Directories
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
-    pkg_ros_gz_rbot = get_package_share_directory('chipta_description')
+    pkg_ros_gz_rbot = get_package_share_directory('chipta_bot')
 
     # Parse robot description from xacro
     robot_description_file = os.path.join(pkg_ros_gz_rbot, 'urdf', 'chipta.xacro')
