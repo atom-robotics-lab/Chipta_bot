@@ -1,0 +1,221 @@
+<?xml version="1.0" ?>
+<robot name="chipta" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find chipta_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find chipta_description)/urdf/chipta.ros2control" />
+<xacro:include filename="$(find chipta_description)/urdf/chipta.gazebo" />
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.006285285436363787 2.3801220083224483e-05 0.02118626436883177" rpy="0 0 0"/>
+    <mass value="3.955246639227324"/>
+    <inertia ixx="0.017496" iyy="0.029781" izz="0.046394" ixy="2.8e-05" iyz="-1e-06" ixz="3.5e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="IMU_v1_1">
+  <inertial>
+    <origin xyz="-4.414700551899457e-05 -1.766564942399154e-05 0.0008825652972892541" rpy="0 0 0"/>
+    <mass value="0.006457505501645493"/>
+    <inertia ixx="0.0" iyy="0.0" izz="1e-06" ixy="-0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.005 -0.0 -0.015" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/IMU_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.005 -0.0 -0.015" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/IMU_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="GPS_v1_1">
+  <inertial>
+    <origin xyz="0.00011627593093297209 -0.0003346346187937373 0.0027235072348321433" rpy="0 0 0"/>
+    <mass value="0.011550869015027797"/>
+    <inertia ixx="0.0" iyy="0.0" izz="1e-06" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.03 -0.0 -0.018" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/GPS_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.03 -0.0 -0.018" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/GPS_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Lidar_v1_1">
+  <inertial>
+    <origin xyz="-0.0021965658486673423 2.561119446363924e-05 0.007120513681703584" rpy="0 0 0"/>
+    <mass value="0.088236472062788"/>
+    <inertia ixx="6e-06" iyy="1.1e-05" izz="1.4e-05" ixy="-0.0" iyz="0.0" ixz="2e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.1125 0.0015 -0.04" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Lidar_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.1125 0.0015 -0.04" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Lidar_v1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wheel_front_left_1">
+  <inertial>
+    <origin xyz="-1.27101263236451e-07 0.013847399301558358 -3.5503662683053494e-07" rpy="0 0 0"/>
+    <mass value="0.032871818242545134"/>
+    <inertia ixx="1e-05" iyy="1.8e-05" izz="1e-05" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.064778 -0.085 -0.030131" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Wheel_front_left_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.064778 -0.085 -0.030131" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Wheel_front_left_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wheel_front_right_1">
+  <inertial>
+    <origin xyz="-1.545012792147915e-07 -0.013722805579174657 -4.273110922881074e-07" rpy="0 0 0"/>
+    <mass value="0.0361026849885689"/>
+    <inertia ixx="1.2e-05" iyy="2.1e-05" izz="1.2e-05" ixy="0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.064778 0.085 -0.030131" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Wheel_front_right_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.064778 0.085 -0.030131" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Wheel_front_right_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wheel_rear_right_1">
+  <inertial>
+    <origin xyz="2.3534519708046098e-08 -0.013847399301558358 -3.560736444099821e-07" rpy="0 0 0"/>
+    <mass value="0.032871818242545016"/>
+    <inertia ixx="1e-05" iyy="1.8e-05" izz="1e-05" ixy="0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.064941 0.085 -0.031781" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Wheel_rear_right_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.064941 0.085 -0.031781" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Wheel_rear_right_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="Wheel_rear_left_1">
+  <inertial>
+    <origin xyz="5.994378951545976e-08 0.013722802958087754 -4.3329028434624384e-07" rpy="0 0 0"/>
+    <mass value="0.03610268483883613"/>
+    <inertia ixx="1.2e-05" iyy="2.1e-05" izz="1.2e-05" ixy="0.0" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.064941 -0.085 -0.030131" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Wheel_rear_left_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.064941 -0.085 -0.030131" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find chipta_description)/meshes/Wheel_rear_left_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="Rigid 14" type="fixed">
+  <origin xyz="0.005 0.0 0.015" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="IMU_v1_1"/>
+</joint>
+
+<joint name="Rigid 22" type="fixed">
+  <origin xyz="-0.03 0.0 0.018" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="GPS_v1_1"/>
+</joint>
+
+<joint name="Rigid 23" type="fixed">
+  <origin xyz="0.1125 -0.0015 0.04" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Lidar_v1_1"/>
+</joint>
+
+<joint name="Revolute 24" type="continuous">
+  <origin xyz="0.064778 0.085 0.030131" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wheel_front_left_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<joint name="Revolute 25" type="continuous">
+  <origin xyz="0.064778 -0.085 0.030131" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wheel_front_right_1"/>
+  <axis xyz="0.0 -1.0 0.0"/>
+</joint>
+
+<joint name="Revolute 27" type="continuous">
+  <origin xyz="-0.064941 -0.085 0.031781" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wheel_rear_right_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<joint name="Revolute 28" type="continuous">
+  <origin xyz="-0.064941 0.085 0.030131" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="Wheel_rear_left_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+</robot>
