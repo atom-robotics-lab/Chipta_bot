@@ -4,7 +4,7 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install -y \
-    locales curl wget gnupg2 lsb-release software-properties-common build-essential git btop neofetch\
+    locales curl wget gnupg2 lsb-release software-properties-common build-essential git btop neofetch nano\
     && locale-gen en_US en_US.UTF-8
 
     #encodeing for the programe drunnign inside 
@@ -17,6 +17,7 @@ RUN echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/u
     
 RUN apt update && apt install -y ros-jazzy-desktop
 RUN apt install -y python3-colcon-common-extensions ros-dev-tools
+RUN apt install -y ros-jazzy-xacro ros-jazzy-joint-state-publisher-gui
 
 RUN curl -sSL https://packages.osrfoundation.org/gazebo.gpg | apt-key add -
 RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu \

@@ -1,10 +1,10 @@
 docker run -it --net=host \
     -e ROS_DOMAIN_ID=10 \
-    -v /home/dev/chipta_ws/src/Chipta_bot:/chipta_ws/src \
+    -v /home/dev/chipta_ws/:/chipta_ws/ \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -e DISPLAY=$DISPLAY \
     --name chipta_container \
-    myimage:latest
+    chipta_image:latest
 
 | Flag                               | Purpose                                                  |
 | ---------------------------------- | -------------------------------------------------------- |
