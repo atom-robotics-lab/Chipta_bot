@@ -6,6 +6,9 @@ docker run -it --net=host \
     --name chipta_container \
     chipta_image:latest
 
+docker exec -it chipta_container bash
+
+docker start -ai chipta_container
 | Flag                               | Purpose                                                  |
 | ---------------------------------- | -------------------------------------------------------- |
 | `--net=host`                       | Allows ROS 2 multicast → Topics visible inside container |
@@ -15,7 +18,5 @@ docker run -it --net=host \
 | `-e DISPLAY=$DISPLAY`              | Tells container which display to use                     |
 | `--name ros_jazzy_dev`             | Gives your container a name                              |
 | `myimage:latest`                   | The image you built                                      |
-
-
 
 
