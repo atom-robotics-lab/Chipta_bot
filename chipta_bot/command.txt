@@ -19,4 +19,5 @@ docker start -ai chipta_container
 | `--name ros_jazzy_dev`             | Gives your container a name                              |
 | `myimage:latest`                   | The image you built                                      |
 
+xhost +local:root
 
